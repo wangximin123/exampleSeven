@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,11 +18,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         IntentFilter intentFilter=new IntentFilter();
-        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        intentFilter.addAction("com.a.MY_BROADCAST");
         myReceiver=new MyReceiver();
         registerReceiver(myReceiver,intentFilter);
     }
-
+    public void send(View view){
+        Intent intent=new Intent("com.a.MY_BROADCAST");
+        sendBroadcast(intent);
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -32,12 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            ConnectivityManager connectivityManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo=connectivityManager.getActiveNetworkInfo();
-            if (networkInfo!=null&&networkInfo.isConnected()){
-                Toast.makeText(MainActivity.this,"connection",Toast.LENGTH_SHORT).show();
-            }else
-            Toast.makeText(MainActivity.this,"no connection",Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(MainActivity.this,"haha",Toast.LENGTH_SHORT).show();
         }
     }
+
 }

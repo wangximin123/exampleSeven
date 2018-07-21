@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Test5</string>
+    <string name="title_activity_login_acticity">LoginActicity</string>
 </resources>

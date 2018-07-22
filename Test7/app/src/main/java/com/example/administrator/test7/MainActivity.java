@@ -1,8 +1,11 @@
 package com.example.administrator.test7;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -21,41 +24,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_CONTACTS},1);
-        }else {
-            f();
-        }
+        MyHelper myHelper=new MyHelper(this,"BookShore",null,2);
+        SQLiteDatabase sqLiteDatabase=myHelper.getWritableDatabase();
+//        ContentValues values=new ContentValues();
+//        values.put("author","wang");
+//        values.put("price",23.5);
+//        values.put("page",100);
+//        values.put("name","AGookBook");
+//        Uri newUri=null;
+//        long l=sqLiteDatabase.insert("Book",null,values);
+//        newUri=Uri.parse("content://com.example.administrator.test7.provider/Book/"+l);
+//        Log.d("result","newUri:"+newUri);
+//        Cursor cursor=sqLiteDatabase.query("Book",null ,null,null,null,null,null);
+//        while (cursor.moveToNext()){
+//            String id=cursor.getString(cursor.getColumnIndex("id"));
+//            String author=cursor.getString(cursor.getColumnIndex("author"));
+//            float price=cursor.getFloat(cursor.getColumnIndex("price"));
+//            int page=cursor.getInt(cursor.getColumnIndex("page"));
+//            String name=cursor.getString(cursor.getColumnIndex("name"));
+//            Log.d("result",id+"--"+author+"--"+price+"--"+page+"--"+name);
+//        }
+    }
 
-    }
-    void f(){
-        Cursor cursor=getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,null);
-        if (cursor!=null){
-            List<String> list=new ArrayList<String>();
-            while (cursor.moveToNext()){
-                String name=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                String number=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                Log.d("result",name+"--"+number);
-                list.add(name+"\n"+number);
-            }
-            ListView listView=findViewById(R.id.listView);
-            MyAdapter myAdapter=new MyAdapter(this,R.layout.list_item,list);
-            listView.setAdapter(myAdapter);
-        }
-    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case 1:
-                if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                    //同意
-                    f();
-                }else {
-                    //拒绝
-                }
-                break;
-        }
-    }
+
 }
 
